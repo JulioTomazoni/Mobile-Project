@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react"
 import { FlatList, TextInput, View, Text } from "react-native";
 import { onValue } from 'firebase/database'
 import { refPatrimonio } from "../../../src/backend/firebase";
+import ItemList from "../../../src/Components/ItemList";
+import { REQUISITA_PATRIMONIO } from "../../../const";
 
 export default function CnsPatrimonio(){
   const [search, setSearch] = useState('')
@@ -36,9 +38,13 @@ export default function CnsPatrimonio(){
           data={filterData}
           keyExtractor={(item) => item.key}
           renderItem={({ item }) => 
-          <Text  
+          <ItemList  
             style={{fontSize: 18, padding: 10, textAlign: 'center'}}
-          >Patrimônio: {item.key} {item.item}</Text>
+            id={'Patrimônio:' +item.key}
+            valor={item.item}
+            component={REQUISITA_PATRIMONIO}
+            props={...props}
+          />
         }
         />
       </View>

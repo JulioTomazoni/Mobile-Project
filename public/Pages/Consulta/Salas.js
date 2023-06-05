@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react"
-import { FlatList, TextInput, View, Text } from "react-native";
+import { FlatList, TextInput, View, Text, StyleSheet } from "react-native";
 import { onValue } from 'firebase/database'
 import { refSala } from "../../../src/backend/firebase";
+import { useNavigation } from '@react-navigation/native';
+import { REQUISITA_SALA } from "../../../const";
 
 export default function CnsSalas(){
   const [search, setSearch] = useState('')
@@ -21,7 +23,7 @@ export default function CnsSalas(){
   }, []);
 
   const filterData = data.filter((item) =>
-    item.sala.toLowerCase().includes(search.toLowerCase())
+    item.sala.includes(search)
   );
 
     return (    
@@ -32,15 +34,36 @@ export default function CnsSalas(){
           onChangeText={text => setSearch(text)}
           value={search}
         />
+
+        <View style={styles.itemContainer}>
+          <Text style={styles.titleText}>Sala</Text>
+        </View>
+
         <FlatList
           data={filterData}
           keyExtractor={(item) => item.key}
           renderItem={({ item }) => 
-          <Text  
-            style={{fontSize: 18, padding: 10, textAlign: 'center'}}
-          >Sala: {item.sala}</Text>
+            <View style={styles.itemContainer}>
+              <Text style={styles.itemText}>{item.sala}</Text>
+            </View>
         }
         />
       </View>
       )
 }
+
+const styles = StyleSheet.create({
+  itemContainer: {
+    alignItems: 'center',
+    margin: 5,
+    padding: 10,
+    borderRadius: 8,
+  },
+  itemText: {
+    fontSize: 16,
+  },
+  titleText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  }
+});

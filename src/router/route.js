@@ -6,34 +6,41 @@ import { Feather } from '@expo/vector-icons';
 import { View } from 'react-native';
 import { CONSULTA_PATRIMONIO, REQUISITA_PATRIMONIO,
          CONSULTA_SALA, REQUISITA_SALA  } from '../../const'
-
-import { Consultar, Requisitar } from '../Components';
+import { DrawerContent } from '../Components';
 import HomePage from '../Home/HomePage.js';
 import { CnsPatrimonio, CnsSalas } from '../../public/Pages/Consulta'
 import { ReqPatrimonio, ReqSalas } from '../../public/Pages/Requisicao';
-import { Login } from '../../public/Login/';
+import { Login, Register } from '../../public/Login';
+import '../backend/firebase'
 
 const Drawer = createDrawerNavigator();
 
 export default function Routes() {
+
   return (
     <NavigationContainer>
       <Drawer.Navigator
-        initialRouteName="Login" 
-        drawerContent={(props) =>
-          <>
-          <Requisitar {...props}/>
-          <Consultar {...props}/>
-          </>
+        initialRouteName='Login'
+        drawerContent={(props) =>          
+          <DrawerContent {...props}/>          
         }
       >
         <Drawer.Screen
           name='Login'
           component={Login}
           options={{
-            drawerItemStyle: {display: 'none'}
+            drawerItemStyle: {display: 'none'},
+            headerShown: false,
           }}
         />
+        <Drawer.Screen
+          name='Cadastro'
+          component={Register}
+          options={{
+            drawerItemStyle: {display: 'none'},
+            headerShown: false,
+          }}
+        />        
         <Drawer.Screen 
           name='Home' 
           component={HomePage}
@@ -72,8 +79,9 @@ export default function Routes() {
           options={{
             drawerItemStyle: {display: 'none'}
           }}
-        />        
+        />       
       </Drawer.Navigator>
+      
     </NavigationContainer>
   );
 }

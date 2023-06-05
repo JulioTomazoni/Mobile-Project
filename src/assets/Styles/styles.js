@@ -34,3 +34,7 @@ export const drawer = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+
+export const itemList = StyleSheet.create({
+  container: {fontSize: 18, padding: 10, textAlign: 'center'},
+});

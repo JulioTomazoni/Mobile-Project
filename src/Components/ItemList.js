@@ -1,12 +1,15 @@
 import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, TouchableOpacity, Text } from "react-native-safe-area-context";
 
-export default function ItemList({id, valor, props, component, style}){
+import { itemList } from "../assets/Styles/styles";
+
+export default function ItemList({id, valor, route}){
+  
 
   return (
     <SafeAreaView
-      style={style}
-      onPress={() => props.navigation.navigate(component)}
+      style={itemList.container}
+      onPress={() => navigate.navigate(route)}
     >
       <TouchableOpacity>
         <Text> {id}   {valor} </Text>

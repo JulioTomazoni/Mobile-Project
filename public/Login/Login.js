@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { getAuth, createUserWithEmailAndPassword  } from "firebase/auth"
+import { useNavigation } from "@react-navigation/native";
+import { signInWithEmailAndPassword } from "firebase/auth"
+import { Authentication } from "../../src/backend/firebase";
 import { SafeAreaView,
          Button,
          Text,
@@ -9,32 +11,44 @@ import { SafeAreaView,
          } from "react-native";
 import { InputWithLabel } from "../../src/Components"; 
 
-const auth = getAuth()
+const auth = Authentication;
 
 export default function Login(){
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  function signIn(email, password){
+  const navigate = useNavigation()
 
-       createUserWithEmailAndPassword(auth, email, password)
+  const handlePress = () => {
+    signIn(email, password)
+  }
+
+  function signIn(email, password){
+ 
+       signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           const user = userCredential.user;
           console.log('Login bem-sucedido! Bem-Vindo ' +user.displayName);
-          // Você pode executar ações adicionais após o login, como redirecionar o usuário para outra tela
+          navigate.navigate('Home')
+          setEmail('')
+          setPassword('')
         })      
         .catch ((error) => {
-          console.log('Erro no login:', error.message); 
+          if (error.code == 'auth/invalid-email'){
+            console.warn('Email ou senha inválido')  
+            console.log('Erro no login:', error.code, error.message);
+          } else {
+            console.error('Erro ao logar') 
+            console.log('Erro no login:', error.code, error.message); 
+          }
     })
-      // Lide com o erro de login, exiba uma mensagem de erro ou tome outras ações apropriadas
   };  
 
   return (
     <SafeAreaView style={style.container}>
       <View style={style.containerTitle}>
-        <Text style={style.title}>Consulta de Patrimônios</Text>
-        <Text style={style.title}>Reservas de Salas</Text>
+        <Text style={style.title}>Controle Patrimônios</Text>
         <Text>___________________________</Text>
         <Text style={{fontWeight: 'bold'}}>
           UTFPR
@@ -50,17 +64,18 @@ export default function Login(){
         label={'Senha'}
         valor={password}
         onChangeInput={setPassword}
+        ispassword={true}
       />
-      {/* <TouchableOpacity style={style.button}> */}
-        <Button 
-        style={style.buttonText}
-        onPress={signIn(email, password)}
-        title="Login"
-        >        
-           
-        </Button>
-      {/* </TouchableOpacity> */}
-      <TouchableOpacity>
+      <TouchableOpacity 
+        style={style.button}
+        onPress={() => handlePress()}
+      >       
+         <Text style={style.buttonText}>Login</Text>
+      </TouchableOpacity>
+      
+      <TouchableOpacity
+        onPress={() => navigate.navigate('Cadastro')}
+      >
         <Text style={style.text}>Cadastre-se</Text>
       </TouchableOpacity>
     </SafeAreaView>
@@ -93,19 +108,15 @@ const style = StyleSheet.create({
     fontSize: 24,
   },
   button: {
-    borderRadius: 10,
-    borderWidth: 2,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    width: 120,
-    height: 45,
-    backgroundColor: '#fff',
-    textDecorationColor: '#8BC34A',
-    borderColor: '#8BC34A',
+    backgroundColor: '#3498db',
+    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
   },
   buttonText: {
-    color: '#8BC34A',
-    fontWeight: "bold", 
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
     textAlign: 'center',
   }
 })

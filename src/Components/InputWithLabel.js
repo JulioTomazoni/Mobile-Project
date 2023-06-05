@@ -5,7 +5,7 @@ import { Text,
          StyleSheet
         } from "react-native";
 
-export default function InputWithLabel({label, onChangeInput, valor}){
+export default function InputWithLabel({label, onChangeInput, valor, ispassword = false}){
   const [text, onChangeText] = React.useState('');  
   return (
     <View style={style.container}>
@@ -14,6 +14,7 @@ export default function InputWithLabel({label, onChangeInput, valor}){
       value={valor}
       onChangeText={onChangeInput}
       style={style.input}
+      secureTextEntry={ispassword}
       />
     </View>
     )

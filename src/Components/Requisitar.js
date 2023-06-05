@@ -1,44 +1,48 @@
 import 'react-native-gesture-handler';
 import React, { useState } from 'react';
-import { DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
+import { DrawerItem  } from '@react-navigation/drawer';
 import { View } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
 import { REQUISITA_PATRIMONIO, REQUISITA_SALA  } from '../../const'
+import { Feather } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
-const Requisitar = (props) => {
+const Requisitar = () => {
   const [requisitaExpanded, setRequisitaExpanded] = useState(false);
 
-  const handleConsultaPress = () => {
+  const handleRequicaoPress = () => {
     setRequisitaExpanded(!requisitaExpanded);
   };
 
-  return (
-    <DrawerContentScrollView {...props}>
-      <DrawerItemList {...props} />
-      <DrawerItem
-        label="Requisição"
-        onPress={handleConsultaPress}
-        style={{ backgroundColor: '#ddd' }}
-        icon={({ color, size }) => (
+  const navigate = useNavigation();
 
-          <Icon name={requisitaExpanded ? 'chevron-up' : 'chevron-down'} size={size} color={color} />
+  return (
+      <View>
+        <DrawerItem
+          label="Requisição"
+          onPress={handleRequicaoPress}
+          style={{ backgroundColor: '#ddd' }}
+          icon={({ color, size }) => (
+
+            <Feather name={requisitaExpanded ? 'chevron-up' : 'chevron-down'} size={size} color={color} />
+          )}
+        />
+        {requisitaExpanded && (
+          <View>
+            <DrawerItem
+              label="Patrimônio"
+              onPress={() => navigate.navigate(REQUISITA_PATRIMONIO)}
+              style={{ marginLeft: 16 }}
+              icon={({ color }) => <Feather name="package" size={20} color={color} />}
+            />
+            <DrawerItem
+              label="Salas"
+              onPress={() => navigate.navigate(REQUISITA_SALA)}
+              style={{ marginLeft: 16 }}
+              icon={({ color }) => <Feather name="book" size={20} color={color} />}
+            />
+          </View>
         )}
-      />
-      {requisitaExpanded && (
-        <View>
-          <DrawerItem
-            label="Patrimônio"
-            onPress={() => props.navigation.navigate(REQUISITA_PATRIMONIO)}
-            style={{ marginLeft: 16 }}
-          />
-          <DrawerItem
-            label="Salas"
-            onPress={() => props.navigation.navigate(REQUISITA_SALA)}
-            style={{ marginLeft: 16 }}
-          />
-        </View>
-      )}
-    </DrawerContentScrollView>
+      </View>
   );
 }
 

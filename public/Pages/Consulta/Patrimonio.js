@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react"
-import { FlatList, TextInput, View, Text } from "react-native";
+import { FlatList, TextInput, View, Text, StyleSheet } from "react-native";
 import { onValue } from 'firebase/database'
 import { refPatrimonio } from "../../../src/backend/firebase";
-import ItemList from "../../../src/Components/ItemList";
-import { REQUISITA_PATRIMONIO } from "../../../const";
 
 export default function CnsPatrimonio(){
   const [search, setSearch] = useState('')
@@ -23,7 +21,7 @@ export default function CnsPatrimonio(){
   }, []);
 
   const filterData = data.filter((item) =>
-    item.item.toLowerCase().includes(search.toLowerCase())
+    item.patrimonio.includes(search)
   );
 
     return (    
@@ -34,19 +32,41 @@ export default function CnsPatrimonio(){
           onChangeText={text => setSearch(text)}
           value={search}
         />
+
+          <View style={styles.itemContainer}>
+            <Text style={styles.titleText}>Patrimônio</Text>
+            <Text style={styles.titleText}>Quantidade</Text>
+          </View>
+
         <FlatList
           data={filterData}
+
           keyExtractor={(item) => item.key}
           renderItem={({ item }) => 
-          <ItemList  
-            style={{fontSize: 18, padding: 10, textAlign: 'center'}}
-            id={'Patrimônio:' +item.key}
-            valor={item.item}
-            component={REQUISITA_PATRIMONIO}
-            props={...props}
-          />
-        }
+            <View style={styles.itemContainer}>
+              <Text style={styles.itemText}>{item.patrimonio}</Text>
+              <Text style={styles.itemText}>{item.quantidade}</Text>
+            </View>
+          }
         />
       </View>
-      )
+      )     
 }
+
+const styles = StyleSheet.create({
+  itemContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    margin: 5,
+    padding: 10,
+    borderRadius: 8,
+  },
+  itemText: {
+    fontSize: 16,
+  },
+  titleText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  }
+});

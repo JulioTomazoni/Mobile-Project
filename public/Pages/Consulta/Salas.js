@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react"
-import { FlatList, TextInput, View, Text, StyleSheet } from "react-native";
+import { FlatList, TextInput, View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { onValue } from 'firebase/database'
 import { refSala } from "../../../src/backend/firebase";
-import { useNavigation } from '@react-navigation/native';
-import { REQUISITA_SALA } from "../../../const";
+import { Feather } from '@expo/vector-icons';
+import { Delete } from "../../../src/backend/controllers/sala";
 
 export default function CnsSalas(){
   const [search, setSearch] = useState('')
   const [data, setData] = useState([])
+  const [key, setKey] = useState([])
 
   useEffect(() => {
     // Função para buscar os dados do Firebase
@@ -15,6 +16,7 @@ export default function CnsSalas(){
       onValue(refSala, (snapshot) => {
         const items = snapshot.val();
         const dataArray = items ? Object.values(items) : [];
+        setKey(items);
         setData(dataArray);
       });
     };
@@ -35,35 +37,66 @@ export default function CnsSalas(){
           value={search}
         />
 
-        <View style={styles.itemContainer}>
+        <View style={styles.container}>
           <Text style={styles.titleText}>Sala</Text>
+          <FlatList
+            data={filterData}
+            renderItem={( item ) => (
+              <View style={styles.itemContainer}>
+                <View style={styles.itemContent}>
+                  <View style={styles.textContainer}>
+                    <Text style={styles.itemText}>{item.item.sala}</Text>
+                  </View>
+                  <TouchableOpacity
+                    onPress={() => {
+                      const chave = Object.keys(key);
+                      Delete(chave[item.index]);
+                    }}
+                    style={styles.button}
+                  >
+                    <Feather name="trash" size={20} color={'red'} />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )}
+          />
         </View>
 
-        <FlatList
-          data={filterData}
-          keyExtractor={(item) => item.key}
-          renderItem={({ item }) => 
-            <View style={styles.itemContainer}>
-              <Text style={styles.itemText}>{item.sala}</Text>
-            </View>
-        }
-        />
       </View>
       )
 }
 
 const styles = StyleSheet.create({
-  itemContainer: {
-    alignItems: 'center',
-    margin: 5,
-    padding: 10,
-    borderRadius: 8,
-  },
-  itemText: {
-    fontSize: 16,
+  container: {
+    flex: 1,
+    paddingHorizontal: 10,
   },
   titleText: {
     fontSize: 16,
     fontWeight: 'bold',
-  }
+    marginBottom: 10,
+    marginRight: 20,
+    alignSelf: 'center',
+  },
+  itemContainer: {
+    marginVertical: 5,
+    padding: 10,
+    borderRadius: 8,
+  },
+  itemContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  textContainer: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  itemText: {
+    fontSize: 16,
+    alignSelf: 'center',
+  },
+  button: {
+    marginLeft: 10,
+  },
 });

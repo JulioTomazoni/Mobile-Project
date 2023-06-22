@@ -1,10 +1,10 @@
 import React from "react";
-import { View, Text, Button } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { Authentication } from "../../src/backend/firebase";
 import { signOut } from "firebase/auth";
 import { useNavigation } from "@react-navigation/native";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { Feather } from '@expo/vector-icons';
+import { DrawerItem } from "@react-navigation/drawer";
 
 export default function Logout(){
   const auth = Authentication;
@@ -18,45 +18,29 @@ export default function Logout(){
       })
       .catch(error => {
         console.log('Erro ao fazer logout:', error);
-      });
-  };
+      });  
+  }
 
   return (
-    <View 
-      style={{
-        marginLeft: 10,
-        marginRight: 10, 
-        marginTop: 590,    
-      }}
-    >
-      <TouchableOpacity
-        title="Sair"
-        
-        color={'red'}
+    <View style={styles.container}>
+      <DrawerItem
+        label={'Logout'}
         onPress={() => handleLogout()}
-        style={{
-          backgroundColor: 'red',
-          fonteWeight: 'bold',
-          paddingTop: 12,
-          paddingBottom: 12, 
-          borderRadius: 5,  
-          
-                 
-        }}
+        style={styles.logoutButton}
         
+        icon={({ color, size}) => (
+
+          <Feather name={'log-out'} size={size} color={'black'} />
+        )}
       >
-        <Text
-          style={{
-            fontSize: 15,
-            fontWeight: 'bold',
-            marginLeft: 16,
-          }}
-        >
-          <Feather name="log-out" size={16} />
-          <Text>        Sair</Text>
-        </Text>
-        
-      </TouchableOpacity>
+      </DrawerItem>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  logoutButton: {
+    backgroundColor: 'red',
+    fontWeight: 'bold',
+  },
+});

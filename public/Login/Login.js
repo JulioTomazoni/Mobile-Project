@@ -29,8 +29,9 @@ export default function Login(){
        signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           const user = userCredential.user;
-          console.log('Login bem-sucedido! Bem-Vindo ' +user.displayName);
+          console.log('Login bem-sucedido! Bem-Vindo ' +user.email);
           navigate.navigate('Home')
+          
           setEmail('')
           setPassword('')
         })      

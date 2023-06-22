@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { DrawerRouter, NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { Feather } from '@expo/vector-icons';
 import { View } from 'react-native';
@@ -79,7 +79,7 @@ export default function Routes() {
           options={{
             drawerItemStyle: {display: 'none'}
           }}
-        />       
+        />    
       </Drawer.Navigator>
       
     </NavigationContainer>

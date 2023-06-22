@@ -8,11 +8,12 @@ const Post = (newRecord) => {
       set(newPost,{
           sala: newRecord,
         }   
-      ).then((snapshot) => {
-        const key = snapshot.key;
-        console.log('Registro criado com sucesso! Chave:', key);
+      ).then(() => {
+        console.log('Registro criado com sucesso! Chave:', newPost.key);
+        alert('Registro criado com sucesso!')
       }).catch((error) => {
         console.log('Erro ao criar o registro:', error);
+        alert('Erro ao criar o registro!')
       });
     }
 

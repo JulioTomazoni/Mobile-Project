@@ -22,7 +22,7 @@ const ReqPatrimonio = () => {
     Post({
       patrimonio: newRecord,
       quantidade: quantidade
-    });
+    }); 
   };
 
   return (

@@ -1,5 +1,7 @@
 import Post from "./Create";
+import Delete from "./Delete";
 
 export {
-  Post
+  Post,
+  Delete,
 }

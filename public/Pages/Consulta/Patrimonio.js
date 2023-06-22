@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react"
-import { FlatList, TextInput, View, Text, StyleSheet } from "react-native";
+import { FlatList, TextInput, View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { onValue } from 'firebase/database'
 import { refPatrimonio } from "../../../src/backend/firebase";
+import { Feather } from '@expo/vector-icons';
+import { Delete } from "../../../src/backend/controllers/patrimonio";
 
 export default function CnsPatrimonio(){
   const [search, setSearch] = useState('')
   const [data, setData] = useState([])
+  const [key, setKey] = useState([])
 
   useEffect(() => {
     // Função para buscar os dados do Firebase
@@ -13,6 +16,7 @@ export default function CnsPatrimonio(){
       onValue(refPatrimonio, (snapshot) => {
         const items = snapshot.val();
         const dataArray = items ? Object.values(items) : [];
+        setKey(items);
         setData(dataArray);
       });
     };
@@ -33,27 +37,41 @@ export default function CnsPatrimonio(){
           value={search}
         />
 
-          <View style={styles.itemContainer}>
-            <Text style={styles.titleText}>Patrimônio</Text>
-            <Text style={styles.titleText}>Quantidade</Text>
-          </View>
+        <View style={styles.titleContainer}>
+          <Text style={styles.titleTextLeft}>Patrimônio</Text>
+          <Text style={styles.titleTextCenter}>Quantidade</Text>
+          <Text style={styles.titleTextRight}>Excluir</Text>
+        </View>
 
         <FlatList
           data={filterData}
-
-          keyExtractor={(item) => item.key}
-          renderItem={({ item }) => 
+          renderItem={( item ) => (
             <View style={styles.itemContainer}>
-              <Text style={styles.itemText}>{item.patrimonio}</Text>
-              <Text style={styles.itemText}>{item.quantidade}</Text>
+              <Text style={styles.itemTextLeft}>{item.item.patrimonio}</Text>
+              <Text style={styles.itemTextLeft}>{item.item.quantidade}</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  const chave = Object.keys(key);
+                  Delete(chave[item.index]);
+                }}
+                style={styles.button}
+              >
+                <Feather name="trash" size={20} color={'red'} />
+              </TouchableOpacity>
             </View>
-          }
+          )}
         />
       </View>
       )     
 }
-
 const styles = StyleSheet.create({
+  titleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    margin: 5,
+    padding: 10,
+    borderRadius: 8,
+  },
   itemContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -62,11 +80,35 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 8,
   },
-  itemText: {
-    fontSize: 16,
-  },
-  titleText: {
+  titleTextLeft: {
+    flex: 1,
     fontSize: 16,
     fontWeight: 'bold',
-  }
+    textAlign: 'left',
+  },
+  titleTextCenter: {
+    flex: 1,
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  titleTextRight: {
+    flex: 1,
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'right',
+  },
+  itemTextLeft: {
+    flex: 1,
+    fontSize: 16,
+    textAlign: 'left',
+  },
+  itemTextCenter: {
+    flex: 1,
+    fontSize: 16,
+    textAlign: 'center',
+  },
+  button: {
+    marginLeft: 10,
+  },
 });

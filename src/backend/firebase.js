@@ -9,6 +9,7 @@ import { getAuth } from "firebase/auth";
 const firebaseConfig = {
   apiKey: "AIzaSyD7VHG2nGe3xZJzk75R4oQ-BsyorkqAlak",
   authDomain: "mobile-project-utfpr.firebaseapp.com",
+  databaseURL: "https://mobile-project-utfpr-default-rtdb.firebaseio.com",
   projectId: "mobile-project-utfpr",
   storageBucket: "mobile-project-utfpr.appspot.com",
   messagingSenderId: "615079349366",

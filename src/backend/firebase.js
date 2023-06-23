@@ -7,13 +7,13 @@ import { getAuth } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyD7VHG2nGe3xZJzk75R4oQ-BsyorkqAlak",
-  authDomain: "mobile-project-utfpr.firebaseapp.com",
-  databaseURL: "https://mobile-project-utfpr-default-rtdb.firebaseio.com",
-  projectId: "mobile-project-utfpr",
-  storageBucket: "mobile-project-utfpr.appspot.com",
-  messagingSenderId: "615079349366",
-  appId: "1:615079349366:web:1d2c0a16eb02bb627fa357"
+  apiKey: "",
+  authDomain: "",
+  databaseURL: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: ""
 };
 
 // Initialize Firebase
